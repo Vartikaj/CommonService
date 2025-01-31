@@ -21,6 +21,9 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore
 
+      - name : Remove old Build
+        run : dotnet clean CommonService/CommonService.csproj
+
       - name: Build app
         run: dotnet build CommonService/CommonService.csproj --configuration Release
 
