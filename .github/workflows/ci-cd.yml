@@ -19,7 +19,10 @@ jobs:
           dotnet-version: '8.0.*'
 
       - name: Restore Dependencies
-        run: dotnet Restore
+        run: dotnet restore
 
       - name: Build app
-        run: dotnet build CommonService/CommonService.csproj
+        run: dotnet build CommonService/CommonService.csproj --configuration Release
+
+      - name: Publish DLL
+        run : dotnet publish CommonService/CommonService.csproj --configuration Release --output ./publish
