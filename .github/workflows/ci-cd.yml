@@ -25,4 +25,4 @@ jobs:
         run: dotnet build CommonService/CommonService.csproj --configuration Release
 
       - name: Publish DLL
-        run : dotnet publish CommonService/CommonService.csproj --configuration Release --output CommonService/bin/Release/net8.0/publish
+        run : dotnet publish CommonService/CommonService.csproj --configuration Release --output ./publish
