@@ -36,7 +36,7 @@ jobs:
       - name: Clone the Master Service Repository
         run: |
           git clone https://github.com/Vartikaj/MasterService.git
-          cp ./publish/CommonService.dll master-service-repo/libs/
+          cp ./publish/CommonService.dll MasterServiceDemo/libs
         env:
           GIT_USER: ${{ secrets.GIT_USERNAME }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
