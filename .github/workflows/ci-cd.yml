@@ -50,3 +50,4 @@ jobs:
           git add MasterServiceDemo/libs/CommonService.dll
           git commit -m "Updated CommonService.dll - $(date)"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Vartikaj/MasterService.git
+          
