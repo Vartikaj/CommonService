@@ -25,7 +25,7 @@ jobs:
         run : dotnet clean CommonService/CommonService.csproj
 
       - name: Build app
-        run: dotnet build CommonService/CommonService.csproj --configuration Release
+        run: dotnet build CommonService/CommonService.csproj --configuration Release --verbosity detailed
 
       - name: Publish DLL
         run : dotnet publish CommonService/CommonService.csproj --configuration Release --output ./publish
