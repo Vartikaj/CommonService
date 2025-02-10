@@ -51,3 +51,4 @@ jobs:
           git commit -m "Updated CommonService.dll - $(date)"
           git push https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/Vartikaj/MasterService.git
           
+          
