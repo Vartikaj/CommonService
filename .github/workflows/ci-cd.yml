@@ -44,12 +44,12 @@ jobs:
 
       - name: Commit and Push DLL to Master Service Repo
         run: |
-          cd MasterServiceDemo
-          git config --global user.name "vartikaj"
-          git config --global user.email "vartikajohari57@gmail.com"
-          git add MasterServiceDemo/libs/CommonService.dll
-          git commit -m "Updated CommonService.dll - $(date)"
-          git push https://x-access-token:${{ secrets.GIT_TOKENS }}@github.com/Vartikaj/MasterService.git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://$GIT_TOKEN@github.com/Vartikaj/MasterService.git
+          git add .
+          git commit -m "Updated CommonService.dll"
+          git push origin master
 
       # - name: Setup SSH Key
       #   run: |
