@@ -33,26 +33,44 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
       
-      - name: Setup SSH Key
+      - name: Clone the Master Service Repository
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Clone the Master Service Repository using SSH
-        run: |
-          git clone git@github.com:Vartikaj/MasterService.git
-          mkdir -p MasterService/MasterService/libs
-          cp ./publish/CommonService.dll MasterService/MasterService/libs
+          git clone https://github.com/Vartikaj/MasterService.git
+          mkdir -p MasterServiceDemo/MasterServiceDemo/libs
+          cp ./publish/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs
+        env:
+          GIT_USER: ${{ secrets.GIT_USERNAME }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKENS }}
 
       - name: Commit and Push DLL to Master Service Repo
         run: |
-          cd MasterService
+          cd MasterServiceDemo
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add MasterService/libs/CommonService.dll
+          git add MasterServiceDemo/libs/CommonService.dll
           git commit -m "Updated CommonService.dll - $(date)"
-          git push origin master
+          git push https://x-access-token:${{ secrets.GIT_TOKENS }}@github.com/Vartikaj/MasterService.git
+
+      # - name: Setup SSH Key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      # - name: Clone the Master Service Repository using SSH
+      #   run: |
+      #     git clone git@github.com:Vartikaj/MasterService.git
+      #     mkdir -p MasterService/MasterService/libs
+      #     cp ./publish/CommonService.dll MasterService/MasterService/libs
+
+      # - name: Commit and Push DLL to Master Service Repo
+      #   run: |
+      #     cd MasterService
+      #     git config --global user.name "GitHub Actions"
+      #     git config --global user.email "actions@github.com"
+      #     git add MasterService/libs/CommonService.dll
+      #     git commit -m "Updated CommonService.dll - $(date)"
+      #     git push origin master
           
           
