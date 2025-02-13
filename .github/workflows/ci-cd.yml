@@ -44,7 +44,7 @@ jobs:
       - name: Commit and Push DLL to Master Service Repo
         run: |
           git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
-          cp -r libs/CommonService.dll MasterServiceDemo/libs/
+          cp -r libs/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs/
           cd MasterServiceDemo
           git add .
           git commit -m "Updated CommonService.dll from CommonService repo"
