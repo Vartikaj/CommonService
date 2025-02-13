@@ -43,12 +43,18 @@ jobs:
         
       - name: Commit and Push DLL to Master Service Repo
         run: |
-          git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
-          cp -r libs/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs/
-          cd MasterServiceDemo
-          git add .
-          git commit -m "Updated CommonService.dll from CommonService repo"
-          git push origin master  # Adjust branch name if needed
+            cd MasterService
+            git config --global user.name "GitHub Actions"
+            git config --global user.email "actions@github.com"
+            git add MasterServiceDemo/libs/CommonService.dll
+            git commit -m "Updated CommonService.dll - $(date)"
+            git push origin master
+          # git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
+          # cp -r libs/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs/
+          # cd MasterServiceDemo
+          # git add .
+          # git commit -m "Updated CommonService.dll from CommonService repo"
+          # git push origin master  # Adjust branch name if needed
 
 
         # run: |
