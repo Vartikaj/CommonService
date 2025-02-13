@@ -37,18 +37,19 @@ jobs:
         run: |
           git clone https://github.com/Vartikaj/MasterService.git
           mkdir -p MasterServiceDemo/MasterServiceDemo/libs
-          cp ./publish/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs
+          cp ./publish/CommonService.dll MasterServiceDemo/libs/
         env:
           GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
         
       - name: Commit and Push DLL to Master Service Repo
         run: |
           git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
-          cp -r libs/CommonService.dll MasterService/libs/
-          cd MasterService
+          cp -r libs/CommonService.dll MasterServiceDemo/libs/
+          cd MasterServiceDemo
           git add .
           git commit -m "Updated CommonService.dll from CommonService repo"
           git push origin master  # Adjust branch name if needed
+
 
         # run: |
         #   git clone https://github.com/Vartikaj/MasterService.git
