@@ -49,8 +49,7 @@ jobs:
           git add .
           git commit -m "Updated CommonService.dll from CommonService repo"
           git push origin master  # Adjust branch name if needed
-        
-        
+
         # run: |
         #   git clone https://github.com/Vartikaj/MasterService.git
         #   mkdir -p MasterServiceDemo/MasterServiceDemo/libs
