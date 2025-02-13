@@ -50,6 +50,7 @@ jobs:
           git add .
           git commit -m "Updated CommonService.dll"
           git push origin master
+          
 
       # - name: Setup SSH Key
       #   run: |
