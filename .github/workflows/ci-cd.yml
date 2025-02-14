@@ -36,9 +36,7 @@ jobs:
       - name: Clone the Master Service Repository
         run: |
           git clone https://github.com/Vartikaj/MasterService.git
-          cd MasterService
-          cd MasterServiceDemo
-          mkdir -p libs
+          mkdir -p MasterService/MasterServiceDemo/libs
           cp ./publish/CommonService.dll MasterService/MasterServiceDemo/libs
         env:
           GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
