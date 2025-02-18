@@ -32,7 +32,8 @@ jobs:
 
       - name: Verify DLL
         run: ls -l ./publish
-      
+
+      # Code for Master Service
       - name: Clone the Master Service Repository
         run: |
           git clone https://github.com/Vartikaj/MasterService.git
@@ -49,6 +50,26 @@ jobs:
             git add MasterServiceDemo/libs/CommonService.dll
             git commit -m "Updated CommonService.dll - $(date)"
             git push https://x-access-token:${{ secrets.GIT_PAT_SECERTS }}@github.com/Vartikaj/MasterService.git HEAD:master
+
+      # Code for UserService
+      - name: Clone the User Service Repository
+        run: |
+          git clone https://github.com/Vartikaj/UserService.git
+          mkdir -p UserService/UserService/libs
+          cp ./publish/CommonService.dll UserService/UserService/libs
+        env:
+          GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
+        
+      - name: Commit and Push DLL to User Service Repo
+        run: |
+            cd MasterService
+            git config --global user.name "GitHub Actions"
+            git config --global user.email "actions@github.com"
+            git add UserService/libs/CommonService.dll
+            git commit -m "Updated CommonService.dll - $(date)"
+            git push https://x-access-token:${{ secrets.GIT_PAT_SECERTS }}@github.com/Vartikaj/UserService.git HEAD:master
+
+        
 
           # git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
           # cp -r libs/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs/
