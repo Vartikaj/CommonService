@@ -39,13 +39,13 @@ jobs:
       # - name: Set TERM Environment Variable
       #   run: export TERM=xterm
 
-      - name: Suppress stty Warning
+      - name: Set Environment Variables
         run: |
           export TERM=dumb
-          stty sane || true
+          echo "TERM=dumb" >> ~/.bashrc
 
       - name: Change Directory Permissions
-        run: sudo chmod -R 777 /usr/local/include/node
+        run: sudo chmod -R 777 ./publish
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
@@ -63,9 +63,7 @@ jobs:
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
-            sudo chmod -R 777 $REPO/$REPOPATH/libs
-            sudo chmod -R 777 /usr/local/include/node
-            cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
+            sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
             
             echo "Updating .csproj file..."
             pwsh -Command "
