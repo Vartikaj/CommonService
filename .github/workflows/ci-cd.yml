@@ -42,10 +42,13 @@ jobs:
       - name: Set Environment Variables
         run: |
           export TERM=dumb
-          echo "TERM=dumb" >> ~/.bashrc
+          stty sane || true
 
       - name: Change Directory Permissions
-        run: sudo chmod -R 777 /usr/local/include/node
+        run: |
+          sudo chmod -R 777 /usr/local/include/node
+          sudo chmod -R 777 /usr/local/share
+
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
