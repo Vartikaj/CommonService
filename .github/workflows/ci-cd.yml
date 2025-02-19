@@ -35,6 +35,12 @@ jobs:
 
       - name: Verify DLL
         run: ls -l ./publish
+
+      - name: Set TERM Environment Variable
+        run: export TERM=xterm
+
+      - name: Change Directory Permissions
+        run: sudo chmod -R 777 /usr/local/include/node
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
