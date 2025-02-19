@@ -43,10 +43,36 @@ jobs:
           update_repo() {
             REPO=$1
             REPOPATH=$2
+            CSPROJ_FILE="$REPO/$REPOPATH/$REPOPATH.csproj"  # Assuming the csproj file is named same as repo
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
             cp ./publish/CommonService.dll $REPO/$REPOPATH/libs
+
+            echo "Updating .csproj file..."
+            pwsh -Command "
+            \$csprojFile = '$CSPROJ_FILE';
+            \$itemGroupContent = @'
+            <ItemGroup>
+                <Folder Include=\"libs\\\" />
+            </ItemGroup>
+            <ItemGroup>
+                <Reference Include=\"CommonService\">
+                    <HintPath>libs/CommonService.dll</HintPath>
+                </Reference>
+            </ItemGroup>
+            '@;
+
+            \$csprojContent = Get-Content \$csprojFile -Raw;
+            if (\$csprojContent -notmatch '<Folder Include=\"libs\\\" />') {
+                \$updatedContent = \$csprojContent -replace '(</Project>)', \"\$itemGroupContent`n`$1\";
+                Set-Content -Path \$csprojFile -Value \$updatedContent;
+                Write-Host 'Updated \$csprojFile successfully!';
+            } else {
+                Write-Host 'Folder entry already exists in \$csprojFile. No changes made.';
+            }"
+
+            echo "Committing changes..."
             cd $REPO
             git config --global user.name "GitHub Actions"
             git config --global user.email "actions@github.com"
@@ -60,89 +86,5 @@ jobs:
           update_repo "UserService" "UserService"
         env:
           GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
-
-
-      # Code for Master Service
-      # - name: Clone the Master Service Repository
-      #   run: |
-      #     git clone https://github.com/Vartikaj/MasterService.git
-      #     mkdir -p MasterService/MasterServiceDemo/libs
-      #     cp ./publish/CommonService.dll MasterService/MasterServiceDemo/libs
-      #   env:
-      #     GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
-        
-      # - name: Commit and Push DLL to Master Service Repo
-      #   run: |
-      #       cd MasterService
-      #       git config --global user.name "GitHub Actions"
-      #       git config --global user.email "actions@github.com"
-      #       git add MasterServiceDemo/libs/CommonService.dll
-      #       git commit -m "Updated CommonService.dll - $(date)"
-      #       git push https://x-access-token:${{ secrets.GIT_PAT_SECERTS }}@github.com/Vartikaj/MasterService.git HEAD:master
-
-      # # Code for UserService
-      # - name: Clone the User Service Repository
-      #   run: |
-      #     git clone https://github.com/Vartikaj/UserService.git
-      #     mkdir -p UserService/UserService/libs
-      #     cp ./publish/CommonService.dll UserService/UserService/libs
-      #   env:
-      #     GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
-        
-      # - name: Commit and Push DLL to User Service Repo
-      #   run: |
-      #       cd UserService
-      #       git config --global user.name "GitHub Actions"
-      #       git config --global user.email "actions@github.com"
-      #       git add UserService/libs/CommonService.dll
-      #       git commit -m "Updated CommonService.dll - $(date)"
-      #       git push https://x-access-token:${{ secrets.GIT_PAT_SECERTS }}@github.com/Vartikaj/UserService.git HEAD:master
-
-          # git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
-          # cp -r libs/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs/
-          # cd MasterServiceDemo
-          # git add .
-          # git commit -m "Updated CommonService.dll from CommonService repo"
-          # git push origin master  # Adjust branch name if needed
-
-
-        # run: |
-        #   git clone https://github.com/Vartikaj/MasterService.git
-        #   mkdir -p MasterServiceDemo/MasterServiceDemo/libs
-        #   cp ./publish/CommonService.dll MasterServiceDemo/MasterServiceDemo/libs
-        # env:
-        #   GH_PAT: ${{ secrets.GIT_PAT_SECERTS }}
-
-      # - name: Commit and Push DLL to Master Service Repo
-      #   run: |
-      #     git clone https://$GH_PAT@github.com/Vartikaj/MasterService.git
-      #     cp -r libs/CommonService.dll MasterService/libs/
-      #     cd MasterService
-      #     git add .
-      #     git commit -m "Updated CommonService.dll from CommonService repo"
-      #     git push origin master  # Adjust branch name if needed
-
-
-      # - name: Setup SSH Key
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      # - name: Clone the Master Service Repository using SSH
-      #   run: |
-      #     git clone git@github.com:Vartikaj/MasterService.git
-      #     mkdir -p MasterService/MasterService/libs
-      #     cp ./publish/CommonService.dll MasterService/MasterService/libs
-
-      # - name: Commit and Push DLL to Master Service Repo
-      #   run: |
-      #     cd MasterService
-      #     git config --global user.name "GitHub Actions"
-      #     git config --global user.email "actions@github.com"
-      #     git add MasterService/libs/CommonService.dll
-      #     git commit -m "Updated CommonService.dll - $(date)"
-      #     git push origin master
           
           
