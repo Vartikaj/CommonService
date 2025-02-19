@@ -39,13 +39,13 @@ jobs:
       # - name: Set TERM Environment Variable
       #   run: export TERM=xterm
 
-      # - name: Suppress stty Warning
-      #   run: |
-      #     export TERM=dumb
-      #     stty sane || true
+      - name: Suppress stty Warning
+        run: |
+          export TERM=dumb
+          stty sane || true
 
-      # - name: Change Directory Permissions
-      #   run: sudo chmod -R 777 /usr/local/include/node || true
+      - name: Change Directory Permissions
+        run: sudo chmod -R 777 /usr/local/include/node
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
@@ -63,8 +63,6 @@ jobs:
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
-            export TERM=dumb
-            stty sane || true
             sudo chmod -R 777 $REPO/$REPOPATH/libs
             cp ./publish/CommonService.dll $REPO/$REPOPATH/libs
             
