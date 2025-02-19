@@ -39,10 +39,9 @@ jobs:
       # - name: Set TERM Environment Variable
       #   run: export TERM=xterm
 
-      - name: Set Environment to Prevent `stty` Warnings
+      - name: Suppress stty Warning
         run: |
           export TERM=dumb
-          export TERM=xterm || true
           stty sane || true
 
       - name: Change Directory Permissions
@@ -64,8 +63,9 @@ jobs:
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
-            sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
-
+            chmod -R 777 $REPO/$REPOPATH/libs
+            cp ./publish/CommonService.dll $REPO/$REPOPATH/libs
+            
             echo "Updating .csproj file..."
             pwsh -Command "
             \$csprojFile = '$CSPROJ_FILE';
