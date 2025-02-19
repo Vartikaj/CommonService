@@ -36,13 +36,10 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
 
-      # - name: Set TERM Environment Variable
-      #   run: export TERM=xterm
-
-      # - name: Set Environment Variables
-      #   run: |
-      #     export TERM=dumb
-      #     stty sane || true
+      - name: Set Environment Variables to Suppress Warnings
+        run: |
+          export TERM=xterm
+          export DEBIAN_FRONTEND=noninteractive
 
       - name: Change Directory Permissions
         run: |
@@ -59,9 +56,6 @@ jobs:
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
-          export TERM=xterm
-          export DEBIAN_FRONTEND=noninteractive
-
           update_repo() {
             REPO=$1
             REPOPATH=$2
