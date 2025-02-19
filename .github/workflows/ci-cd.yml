@@ -44,8 +44,10 @@ jobs:
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
+
       - name: Check Git Installation
         run: git --version
+        
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
