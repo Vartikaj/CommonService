@@ -64,7 +64,8 @@ jobs:
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
             sudo chmod -R 777 $REPO/$REPOPATH/libs
-            cp ./publish/CommonService.dll $REPO/$REPOPATH/libs
+            sudo chmod -R 777 /usr/local/include/node
+            cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
             
             echo "Updating .csproj file..."
             pwsh -Command "
