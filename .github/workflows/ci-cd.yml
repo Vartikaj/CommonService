@@ -47,7 +47,7 @@ jobs:
 
       - name: Check Git Installation
         run: git --version
-        
+
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
@@ -58,7 +58,7 @@ jobs:
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
-            cp ./publish/CommonService.dll $REPO/$REPOPATH/libs
+            sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
 
             echo "Updating .csproj file..."
             pwsh -Command "
