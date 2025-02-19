@@ -45,7 +45,7 @@ jobs:
           echo "TERM=dumb" >> ~/.bashrc
 
       - name: Change Directory Permissions
-        run: sudo chmod -R 777 ./publish
+        run: sudo chmod -R 777 /usr/local/include/node
       
       - name: Install Git (if needed)
         run: sudo apt-get update && sudo apt-get install -y git
