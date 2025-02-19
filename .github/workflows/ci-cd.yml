@@ -41,6 +41,12 @@ jobs:
           export TERM=xterm
           export DEBIAN_FRONTEND=noninteractive
 
+      - name: Disable stty Calls
+        run: |
+          if [ -t 0 ]; then
+            stty sane
+          fi
+
       - name: Change Directory Permissions
         run: |
           sudo chmod -R 777 /usr/local/include/node
