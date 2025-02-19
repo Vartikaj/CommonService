@@ -36,11 +36,12 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
 
-      - name: Set TERM Environment Variable
-        run: export TERM=xterm
+      # - name: Set TERM Environment Variable
+      #   run: export TERM=xterm
 
-      - name: Suppress stty Warning
+      - name: Set Environment to Prevent `stty` Warnings
         run: |
+          export TERM=dumb
           export TERM=xterm || true
           stty sane || true
 
