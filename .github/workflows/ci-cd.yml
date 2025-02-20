@@ -10,16 +10,21 @@ jobs:
   build: 
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
+      - name: 🛠️ Set up Repository
         uses: actions/checkout@v3
+      
+      - name: 🏗️ Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xmlstarlet
+      
+      - name: 🖥️ Prevent `stty` Warnings (Set TERM Variable)
+        run: echo "TERM=dumb" >> $GITHUB_ENV
 
-      - name: Setup .dotnet8
+      - name: 🏗️ Setup .dotnet8
         uses : actions/setup-dotnet@v3
         with :
           dotnet-version: '8.0.*'
-
-      - name: Install PowerShell
-        run: sudo apt-get update && sudo apt-get install -y powershell
 
       - name: Restore Dependencies
         run: dotnet restore
@@ -36,18 +41,18 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
 
-      - name: Configure TERM for Session
-        run: echo "export TERM=xterm" >> ~/.bashrc
+      # - name: Configure TERM for Session
+      #   run: echo "export TERM=xterm" >> ~/.bashrc
 
-      - name: Suppress stty Warnings
-        run: |
-          export TERM=dumb
-          stty sane || true
+      # - name: Suppress stty Warnings
+      #   run: |
+      #     export TERM=dumb
+      #     stty sane || true
 
-      - name: Change Directory Permissions
-        run: |
-          sudo chmod -R 777 /usr/local/include/node
-          sudo chmod -R 777 /usr/local/share
+      # - name: Change Directory Permissions
+      #   run: |
+      #     sudo chmod -R 777 /usr/local/include/node
+      #     sudo chmod -R 777 /usr/local/share
 
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
@@ -60,30 +65,15 @@ jobs:
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
             sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
-            # export TERM=dumb  # Prevent stty warnings
 
             echo "Updating .csproj file..."
-            pwsh -Command "
-            \$csprojFile = '$CSPROJ_FILE';
-            \$itemGroupContent = @'
-            <ItemGroup>
-                <Folder Include=\"libs\\\" />
-            </ItemGroup>
-            <ItemGroup>
-                <Reference Include=\"CommonService\">
-                    <HintPath>libs/CommonService.dll</HintPath>
-                </Reference>
-            </ItemGroup>
-            '@;
-
-            \$csprojContent = Get-Content \$csprojFile -Raw;
-            if (\$csprojContent -notmatch '<Folder Include=\"libs\\\" />') {
-                \$updatedContent = \$csprojContent -replace '(</Project>)', \"\$itemGroupContent`n`$1\";
-                Set-Content -Path \$csprojFile -Value \$updatedContent;
-                Write-Host 'Updated \$csprojFile successfully!';
-            } else {
-                Write-Host 'Folder entry already exists in \$csprojFile. No changes made.';
-            }"
+            xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
+                -s "/Project/ItemGroup[last()]" -t elem -n "Folder" -v "" \
+                -i "/Project/ItemGroup/Folder" -t attr -n "Include" -v "libs/" \
+                -s "/Project/ItemGroup[last()]" -t elem -n "Reference" -v "" \
+                -i "/Project/ItemGroup/Reference" -t attr -n "Include" -v "CommonService" \
+                -s "/Project/ItemGroup/Reference" -t elem -n "HintPath" -v "libs/CommonService.dll" \
+                "$CSPROJ_FILE"
 
             echo "Committing changes..."
             cd $REPO
