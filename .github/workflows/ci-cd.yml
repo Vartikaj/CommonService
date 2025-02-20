@@ -67,7 +67,6 @@ jobs:
             sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
 
             echo "Updating .csproj file..."
-            cd $REPO
             xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
                 -s "/Project/ItemGroup[last()]" -t elem -n "Folder" -v "" \
                 -i "/Project/ItemGroup/Folder" -t attr -n "Include" -v "libs/" \
