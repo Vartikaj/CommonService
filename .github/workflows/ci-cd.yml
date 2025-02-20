@@ -60,13 +60,14 @@ jobs:
           update_repo() {
             REPO=$1
             REPOPATH=$2
-            CSPROJ_FILE="$REPO/$REPOPATH/$REPOPATH.csproj"  # Assuming the csproj file is named same as repo
+            CSPROJ_FILE="$REPOPATH/$REPOPATH.csproj"  # Assuming the csproj file is named same as repo
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
             sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
 
             echo "Updating .csproj file..."
+            cd $REPO
             xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
                 -s "/Project/ItemGroup[last()]" -t elem -n "Folder" -v "" \
                 -i "/Project/ItemGroup/Folder" -t attr -n "Include" -v "libs/" \
