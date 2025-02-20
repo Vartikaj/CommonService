@@ -43,6 +43,12 @@ jobs:
         run: |
           export TERM=dumb
           stty sane || true
+      
+      - name: Disable stty in Non-Interactive Mode
+        run: |
+          if [ -t 0 ]; then
+            stty sane
+          fi
 
       - name: Change Directory Permissions
         run: |
@@ -59,8 +65,6 @@ jobs:
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
-          
-
           update_repo() {
             REPO=$1
             REPOPATH=$2
@@ -69,8 +73,8 @@ jobs:
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
             sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
-            export TERM=dumb  # Prevent stty warnings
-            
+            # export TERM=dumb  # Prevent stty warnings
+
             echo "Updating .csproj file..."
             pwsh -Command "
             \$csprojFile = '$CSPROJ_FILE';
