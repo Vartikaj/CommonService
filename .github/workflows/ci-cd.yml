@@ -62,6 +62,9 @@ jobs:
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
+          export TERM=xterm
+          export DEBIAN_FRONTEND=noninteractive
+          
           update_repo() {
             REPO=$1
             REPOPATH=$2
