@@ -36,31 +36,18 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
 
-      - name: Configure TERM for Session
-        run: echo "export TERM=xterm" >> ~/.bashrc
+      # - name: Configure TERM for Session
+      #   run: echo "export TERM=xterm" >> ~/.bashrc
 
       - name: Suppress stty Warnings
         run: |
           export TERM=dumb
           stty sane || true
-      
-      - name: Disable stty in Non-Interactive Mode
-        run: |
-          if [ -t 0 ]; then
-            stty sane
-          fi
 
       - name: Change Directory Permissions
         run: |
           sudo chmod -R 777 /usr/local/include/node
           sudo chmod -R 777 /usr/local/share
-
-      
-      - name: Install Git (if needed)
-        run: sudo apt-get update && sudo apt-get install -y git
-
-      - name: Check Git Installation
-        run: git --version
 
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
