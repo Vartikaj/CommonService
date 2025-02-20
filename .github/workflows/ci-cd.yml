@@ -60,7 +60,8 @@ jobs:
           update_repo() {
             REPO=$1
             REPOPATH=$2
-            CSPROJ_FILE="$REPOPATH/$REPOPATH.csproj"  # Assuming the csproj file is named same as repo
+            CSPROJ_FILE="$REPO/$REPOPATH/$REPOPATH.csproj"  # Assuming the csproj file is named same as repo
+            CSPROJ_FILE2="$REPOPATH/$REPOPATH.csproj"
 
             git clone https://github.com/Vartikaj/$REPO.git
             mkdir -p $REPO/$REPOPATH/libs
@@ -80,7 +81,7 @@ jobs:
             git config --global user.name "GitHub Actions"
             git config --global user.email "actions@github.com"
             git add $REPOPATH/libs/CommonService.dll
-            git add $CSPROJ_FILE
+            git add $CSPROJ_FILE2
             git commit -m "Updated CommonService.dll and .csproj - $(date)"
             git push https://x-access-token:${{ secrets.GIT_PAT_SECERTS }}@github.com/Vartikaj/$REPO.git HEAD:master
             cd ..
