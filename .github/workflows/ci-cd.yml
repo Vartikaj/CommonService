@@ -36,16 +36,13 @@ jobs:
       - name: Verify DLL
         run: ls -l ./publish
 
-      - name: Set Environment Variables to Suppress Warnings
-        run: |
-          export TERM=xterm
-          export DEBIAN_FRONTEND=noninteractive
+      - name: Configure TERM for Session
+        run: echo "export TERM=xterm" >> ~/.bashrc
 
-      - name: Disable stty Calls
+      - name: Suppress stty Warnings
         run: |
-          if [ -t 0 ]; then
-            stty sane
-          fi
+          export TERM=dumb
+          stty sane || true
 
       - name: Change Directory Permissions
         run: |
@@ -62,9 +59,8 @@ jobs:
         # Function to Clone, Copy, Commit, and Push
       - name: Update DLL in Multiple Repositories
         run: |
-          export TERM=xterm
-          export DEBIAN_FRONTEND=noninteractive
-          
+          export TERM=dumb  # Prevent stty warnings
+
           update_repo() {
             REPO=$1
             REPOPATH=$2
