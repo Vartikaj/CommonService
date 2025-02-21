@@ -68,13 +68,21 @@ jobs:
             sudo cp -r ./publish/CommonService.dll $REPO/$REPOPATH/libs
 
             echo "Updating .csproj file..."
-            xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
+            # Add <Folder Include="libs\" /> if not present
+            if ! grep -q '<Folder Include="libs\" />' "$CSPROJ_FILE"; then
+              xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
                 -s "/Project/ItemGroup[last()]" -t elem -n "Folder" -v "" \
                 -i "/Project/ItemGroup/Folder" -t attr -n "Include" -v "libs/" \
+                "$CSPROJ_FILE"
+            fi
+            
+            if ! grep -q '<Reference Include="CommonService">' "$CSPROJ_FILE"; then
+              xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
                 -s "/Project/ItemGroup[last()]" -t elem -n "Reference" -v "" \
                 -i "/Project/ItemGroup/Reference" -t attr -n "Include" -v "CommonService" \
                 -s "/Project/ItemGroup/Reference" -t elem -n "HintPath" -v "libs/CommonService.dll" \
                 "$CSPROJ_FILE"
+              fi
 
             echo "Committing changes..."
             cd $REPO
