@@ -82,7 +82,7 @@ jobs:
                 -i "/Project/ItemGroup/Reference" -t attr -n "Include" -v "CommonService" \
                 -s "/Project/ItemGroup/Reference" -t elem -n "HintPath" -v "libs/CommonService.dll" \
                 "$CSPROJ_FILE"
-              fi
+            fi
 
             echo "Committing changes..."
             cd $REPO
