@@ -17,8 +17,8 @@ namespace CommonService.Utility
         {
             _connectionFactory = new ConnectionFactory() { 
                 HostName = "localhost",
-                UserName = "root",
-                Password = "password",
+                UserName = "vartika",
+                Password = "1234",
             };
 
             _connection = (IConnection)_connectionFactory.CreateConnectionAsync();
