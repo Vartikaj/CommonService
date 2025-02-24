@@ -77,11 +77,11 @@ jobs:
             fi
             
             if ! grep -q '<Reference Include="CommonService">' "$CSPROJ_FILE"; then
-              xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
-                -s "/Project/ItemGroup[last()]" -t elem -n "Reference" -v "" \
-                -i "/Project/ItemGroup/Reference" -t attr -n "Include" -v "CommonService" \
-                -s "/Project/ItemGroup/Reference" -t elem -n "HintPath" -v "libs/CommonService.dll" \
-                "$CSPROJ_FILE"
+                xmlstarlet ed --inplace -s "/Project" -t elem -n "ItemGroup" -v "" \
+                    -s "/Project/ItemGroup[last()]" -t elem -n "Reference" -v "" \
+                    -i "/Project/ItemGroup/Reference" -t attr -n "Include" -v "CommonService" \
+                    -s "/Project/ItemGroup/Reference" -t elem -n "HintPath" -v "libs/CommonService.dll" \
+                    "$CSPROJ_FILE"
             fi
 
             echo "Committing changes..."
