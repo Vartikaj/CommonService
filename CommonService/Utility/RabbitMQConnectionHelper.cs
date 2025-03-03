@@ -11,7 +11,7 @@ namespace CommonService.Utility
     public class RabbitMQConnectionHelper
     {
         private readonly ConnectionFactory _connectionFactory;
-        private IConnection _connection;
+        // private IConnection _connection;
 
         public RabbitMQConnectionHelper()
         {
@@ -20,10 +20,11 @@ namespace CommonService.Utility
                 UserName = "vartika",
                 Password = "1234",
             };
-
-            _connection = (IConnection)_connectionFactory.CreateConnectionAsync();
         }
 
-        public IConnection GetConnection() => _connection;
+        public async Task<IConnection> GetConnectionAsync()
+        {
+            return await _connectionFactory.CreateConnectionAsync();
+        }
     }
 }
